@@ -47,7 +47,54 @@ class ModelTrainer:
                 "catboost classifier" : CatBoostRegressor(verbose=False),
             }
 
-            model_report:dict=evalutae_model(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models)
+            params = {
+                "Decision Tree": {
+                    'criterion': ['squared_error', 'friedman_mse', 'absolute_error','poisson'],
+                   # 'splitter': ['best', 'random'],
+                   # 'max_depth': [2, 3, 5, 10],
+                },
+                "Random Forest": {
+                    'n_estimators': [10, 50, 100, 200],
+                    #'criterion': ['squared_error', 'friedman_mse', 'absolute_error','poisson'],
+                },
+                "Gradient Boosting": {
+                    'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                    'subsample': [0.5, 0.7, 1.0,0.8,0.9],
+                    'n_estimators': [10, 50, 100, 200,64,128],
+                   # 'loss': ['ls', 'lad', 'huber', 'quantile'],
+                },
+                "Linear Regression": {
+                   # 'fit_intercept': [True, False],
+                   # 'normalize': [True, False],
+                },
+                "K-Nearest Neighbors": {
+                    'n_neighbors': [3, 5, 11, 19],
+                  #  'weights': ['uniform', 'distance'],
+                  #  'metric': ['euclidean', 'manhattan'],
+                },
+                "XGBClasifier": {
+                    'n_estimators': [10, 50, 100, 200],
+                    'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                  #  'subsample': [0.5, 0.7, 1.0],
+                  #  'max_depth': [3, 5, 10],
+                },
+                "catboost classifier": {
+                  'depth': [3, 1, 2, 6, 4, 5, 7, 8, 9, 10],
+                  'iterations': [250, 100, 500, 1000],
+                  #  'n_estimators': [10, 50, 100, 200],
+                    'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                  #  'subsample': [0.5, 0.7, 1.0],
+                  #  'max_depth': [3, 5, 10],
+                },
+                "AdaBoost": {
+                    'n_estimators': [10, 50, 100, 200],
+                    'learning_rate': [0.01, 0.05, 0.1, 0.2],
+                }
+
+            }
+
+
+            model_report:dict=evalutae_model(X_train=X_train,y_train=y_train,X_test=X_test,y_test=y_test,models=models,param=params)
 
             ## To get best model score from dict
             best_model_score = max(sorted(model_report.values()))   
